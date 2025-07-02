@@ -1,0 +1,87 @@
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .word-cell {
+            transition: all 0.2s ease;
+        }
+        
+        .word-cell:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .word-cell.selected {
+            background-color: #3b82f6;
+            color: white;
+        }
+        .hint{
+            color: red;
+        }
+        .word-found {
+            text-decoration: line-through;
+            color: #10b981;
+        }
+        
+        .game-container {
+            perspective: 1000px;
+        }
+        
+        .grid-container {
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .modal {
+            transition: all 0.3s ease;
+        }
+        
+        .modal-enter {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        .modal-enter-active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .word-list-item:hover {
+            background-color: #f1f5f9;
+        }
+        /* prevent browser text‐selection on the grid */
+#wordGrid, 
+#wordGrid .cell {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
+/* .cell.selected {
+ 
+  background-color: theme('colors.blue.300');
+  color: theme('colors.blue.900');
+} */
+.cell.selected {
+  
+  color:           #1e3a8a;
+  font-weight: 800; /* blue-900 */
+}

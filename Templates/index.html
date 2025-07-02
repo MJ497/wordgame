@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+    <style>
+      
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-blue-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-search text-2xl"></i>
+                <span class="text-xl font-bold">WordSearch</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#" class="hover:text-blue-200 transition">Home</a>
+                <a href="#features" class="hover:text-blue-200 transition">Features</a>
+                <a href="#game" class="hover:text-blue-200 transition">Play</a>
+                <a href="#leaderboard" class="hover:text-blue-200 transition">Leaderboard</a>
+                <a href="#contact" class="hover:text-blue-200 transition">Contact</a>
+            </div>
+            <div class="flex items-center space-x-4">
+               <a href="{{url_for('login')}}">
+                <button id="loginBtn" class="bg-white text-blue-600 px-4 py-1 rounded-full font-medium hover:bg-blue-50 transition">Login</button>
+            </a> 
+                <a href="{{url_for('signup')}}">
+
+                    <button id="registerBtn" class="border border-white px-4 py-1 rounded-full font-medium hover:bg-blue-500 transition">Sign up</button>
+                </a>
+                <button class="md:hidden" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-blue-700 px-4 py-2">
+            <a href="#" class="block py-2 hover:text-blue-200 transition">Home</a>
+            <a href="#features" class="block py-2 hover:text-blue-200 transition">Features</a>
+            <a href="#game" class="block py-2 hover:text-blue-200 transition">Play</a>
+            <a href="#leaderboard" class="block py-2 hover:text-blue-200 transition">Leaderboard</a>
+            <a href="#contact" class="block py-2 hover:text-blue-200 transition">Contact</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="bg-gradient-to-r from-blue-500 to-blue-700 text-white py-16">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">Find Hidden Words</h1>
+                <p class="text-xl mb-6">Challenge your vocabulary skills with our exciting word search game. Find all words to win!</p>
+                <div class="flex space-x-4">
+                    <button id="playNowBtn" class="bg-white text-blue-600 px-6 py-3 rounded-full font-bold hover:bg-blue-100 transition flex items-center">
+                        <i class="fas fa-play mr-2"></i> Play Now
+                    </button>
+                   
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center">
+                    <div class="absolute inset-0 border-4 border-white border-opacity-30 rounded-2xl m-4"></div>
+                    <div class="absolute inset-0 border-4 border-white border-opacity-20 rounded-2xl m-8"></div>
+                    <div class="text-center z-10">
+                        <i class="fas fa-search text-6xl md:text-8xl mb-4"></i>
+                        <p class="text-xl font-bold">Word Search</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Game Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-brain text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Brain Training</h3>
+                    <p class="text-gray-600 text-center">Improve your vocabulary and cognitive skills by finding hidden words in challenging puzzles.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-trophy text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Multiple Levels</h3>
+                    <p class="text-gray-600 text-center">Choose from easy, medium, and hard difficulty levels to match your skill and challenge yourself.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-md hover:shadow-lg transition">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-users text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-center">Leaderboards</h3>
+                    <p class="text-gray-600 text-center">Compete with friends and players worldwide to see who can find words the fastest.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Section -->
+    <section id="game" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Play Word Search</h2>
+            
+            <!-- Game Controls -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-xl font-semibold mb-2">Difficulty Level</h3>
+                        <div class="flex space-x-2">
+                            <button id="easyBtn" class="difficulty-btn bg-green-100 text-green-800 px-4 py-2 rounded-full font-medium hover:bg-green-200 transition" data-level="easy">Easy</button>
+                            <button id="mediumBtn" class="difficulty-btn bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full font-medium hover:bg-yellow-200 transition" data-level="medium">Medium</button>
+                            <button id="hardBtn" class="difficulty-btn bg-red-100 text-red-800 px-4 py-2 rounded-full font-medium hover:bg-red-200 transition" data-level="hard">Hard</button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center space-x-4">
+                        <div class="bg-blue-100 px-4 py-2 rounded-full">
+                            <span class="font-semibold">Time: </span>
+                            <span id="timer">02:00</span>
+                        </div>
+                        <div class="bg-purple-100 px-4 py-2 rounded-full">
+                            <span class="font-semibold">Score: </span>
+                            <span id="score">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-center space-x-4">
+                    <button id="newGameBtn" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition flex items-center">
+                        <i class="fas fa-sync-alt mr-2"></i> New Game
+                    </button>
+                    <button id="hintBtn" class="bg-yellow-500 text-white px-6 py-2 rounded-full font-medium hover:bg-yellow-600 transition flex items-center">
+                        <i class="fas fa-lightbulb mr-2"></i> Hint (3 left)
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Game Area -->
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Word Grid -->
+                <div class="game-container flex-1">
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4 text-center">Find these words:</h3>
+                        <div id="wordList" class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
+                            <!-- Words will be populated here by JavaScript -->
+                        </div>
+                        
+                        <div class="grid-container bg-gray-100 p-4 rounded-lg">
+                            <div id="wordGrid" class="grid grid-cols-8 gap-1 mx-auto">
+                                <!-- Grid will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Game Info -->
+                <div class="lg:w-1/3">
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                        <h3 class="text-xl font-semibold mb-4">How to Play</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-mouse-pointer text-blue-500 mt-1 mr-3"></i>
+                                <span>Click and drag to select letters to form words</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-list text-blue-500 mt-1 mr-3"></i>
+                                <span>Words can be found horizontally, vertically, or diagonally</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-clock text-blue-500 mt-1 mr-3"></i>
+                                <span>Complete before time runs out for bonus points</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-lightbulb text-blue-500 mt-1 mr-3"></i>
+                                <span>Use hints when you're stuck (limited uses)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-semibold mb-4">Word Definition</h3>
+                        <div id="wordDefinition" class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-gray-500 italic">Select a word from the list to see its definition</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section id="leaderboard" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Leaderboard</h2>
+            
+            <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
+                <div class="grid grid-cols-4 bg-gray-200 font-semibold p-4">
+                    <div>Rank</div>
+                    <div>Player</div>
+                    <div class="text-center">Score</div>
+                    <div class="text-right">Level</div>
+                </div>
+                
+                <div id="leaderboardEntries" class="divide-y divide-gray-200">
+                    <!-- Leaderboard entries will be populated by JavaScript -->
+                </div>
+                
+                <div class="bg-gray-100 p-4 text-center">
+                    <button id="loadMoreBtn" class="text-blue-600 font-medium hover:text-blue-800 transition">
+                        Load More <i class="fas fa-chevron-down ml-1"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-8">Contact Us</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Get in Touch</h3>
+                    <form id="contactForm" class="space-y-4">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition">
+                            Send Message <i class="fas fa-paper-plane ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-semibold mb-4">Our Information</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Address</h4>
+                                <p class="text-gray-600">123 Word Street, Vocabulary City, 56789</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-envelope text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-600">support@wordsearchgame.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt text-blue-500 mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-600">+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h4 class="font-medium mb-2">Follow Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-700 transition">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="bg-blue-400 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-blue-500 transition">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="bg-pink-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-pink-700 transition">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="bg-red-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-700 transition">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Submit Feedback</h3>
+                <button id="closeFeedbackModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="feedbackForm" class="space-y-4">
+                <div>
+                    <label for="feedbackName" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                    <input type="text" id="feedbackName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="feedbackEmail" class="block text-sm font-medium text-gray-700 mb-1">Email (optional)</label>
+                    <input type="email" id="feedbackEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="feedbackMessage" class="block text-sm font-medium text-gray-700 mb-1">Your Feedback</label>
+                    <textarea id="feedbackMessage" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <div>
+                    <label for="feedbackRating" class="block text-sm font-medium text-gray-700 mb-1">Rating</label>
+                    <div class="flex space-x-2">
+                        <button type="button" class="rating-star text-gray-400 hover:text-yellow-400 transition" data-rating="1">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button type="button" class="rating-star text-gray-400 hover:text-yellow-400 transition" data-rating="2">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button type="button" class="rating-star text-gray-400 hover:text-yellow-400 transition" data-rating="3">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button type="button" class="rating-star text-gray-400 hover:text-yellow-400 transition" data-rating="4">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button type="button" class="rating-star text-gray-400 hover:text-yellow-400 transition" data-rating="5">
+                            <i class="fas fa-star"></i>
+                        </button>
+                    </div>
+                    <input type="hidden" id="feedbackRatingValue" value="0">
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition w-full">
+                    Submit Feedback <i class="fas fa-check ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Login to Your Account</h3>
+                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label for="loginEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="loginEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="rememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                        <label for="rememberMe" class="ml-2 block text-sm text-gray-700">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Forgot password?</a>
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition w-full">
+                    Login <i class="fas fa-sign-in-alt ml-2"></i>
+                </button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-600">Don't have an account? <button id="showRegisterModal" class="text-blue-600 hover:text-blue-800">Register here</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md modal">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Create an Account</h3>
+                <button id="closeRegisterModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="registerForm" class="space-y-4">
+                <div>
+                    <label for="registerName" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                    <input type="text" id="registerName" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="registerEmail" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="registerPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="registerConfirmPassword" class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="acceptTerms" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="acceptTerms" class="ml-2 block text-sm text-gray-700">I accept the <a href="#" class="text-blue-600 hover:text-blue-800">Terms and Conditions</a></label>
+                </div>
+                <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition w-full">
+                    Register <i class="fas fa-user-plus ml-2"></i>
+                </button>
+            </form>
+            <div class="mt-4 text-center">
+                <p class="text-sm text-gray-600">Already have an account? <button id="showLoginModal" class="text-blue-600 hover:text-blue-800">Login here</button></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Complete Modal -->
+    <div id="gameCompleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-xl p-6 w-full max-w-md modal">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-trophy text-green-600 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">Congratulations!</h3>
+                <p class="text-gray-600 mb-4">You've completed the word search puzzle!</p>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-6">
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">Score:</span>
+                        <span id="finalScore" class="font-bold">0</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-medium">Time Left:</span>
+                        <span id="finalTime" class="font-bold">00:00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="font-medium">Difficulty:</span>
+                        <span id="finalDifficulty" class="font-bold">Easy</span>
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 justify-center">
+                    <button id="playAgainBtn" class="bg-blue-600 text-white px-6 py-2 rounded-full font-medium hover:bg-blue-700 transition">
+                        Play Again
+                    </button>
+                    <button id="shareScoreBtn" class="bg-green-600 text-white px-6 py-2 rounded-full font-medium hover:bg-green-700 transition">
+                        Share Score
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">WordSearch</h4>
+                    <p class="text-gray-400">Improve your vocabulary and cognitive skills with our fun word search game.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white transition">Features</a></li>
+                        <li><a href="#game" class="text-gray-400 hover:text-white transition">Play Game</a></li>
+                        <li><a href="#leaderboard" class="text-gray-400 hover:text-white transition">Leaderboard</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Help</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                        <li><button id="feedbackFooterBtn" class="text-gray-400 hover:text-white transition text-left">Feedback</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+                    <p class="text-gray-400 mb-2">Subscribe to get updates and new features.</p>
+                    <form class="flex">
+                        <input type="email" placeholder="Your email" class="px-4 py-2 rounded-l-lg focus:outline-none text-gray-800 w-full">
+                        <button type="submit" class="bg-blue-600 px-4 py-2 rounded-r-lg hover:bg-blue-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2023 WordSearch Game. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    
+</body>
+</html>
