@@ -138,30 +138,31 @@
     </section>
 
     <!-- Leaderboard Section -->
-    <section id="leaderboard" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-8">Leaderboard</h2>
-            
-            <div class="bg-gray-50 rounded-xl shadow-md overflow-hidden">
-                <div class="grid grid-cols-4 bg-gray-200 font-semibold p-4">
-                    <div>Rank</div>
-                    <div>Player</div>
-                    <div class="text-center">Score</div>
-                    <div class="text-right">Level</div>
-                </div>
-                
-                <div id="leaderboardEntries" class="divide-y divide-gray-200">
-                    <!-- Leaderboard entries will be populated by JavaScript -->
-                </div>
-                
-                <div class="bg-gray-100 p-4 text-center">
-                    <button id="loadMoreBtn" class="text-blue-600 font-medium hover:text-blue-800 transition">
-                        Load More <i class="fas fa-chevron-down ml-1"></i>
-                    </button>
-                </div>
-            </div>
+  <section id="leaderboard" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-8">Leaderboard</h2>
+        <div class="flex justify-end mb-4">
+            <button id="toggleLeaderboardBtn" class="bg-blue-600 text-white px-4 py-2 rounded-full font-medium hover:bg-blue-700 transition">
+                Show Aggregate Scores
+            </button>
         </div>
-    </section>
+        <div class="bg-gray-50 rounded-xl shadow-md overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-200 font-semibold">
+                    <tr>
+                        <th class="px-6 py-3 text-left">Rank</th>
+                        <th class="px-6 py-3 text-left">Player</th>
+                        <th class="px-6 py-3 text-center" id="scoreHeader">Score</th>
+                        <th class="px-6 py-3 text-right" id="levelHeader">Level</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardEntries" class="divide-y divide-gray-200">
+                    <!-- Leaderboard entries will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
 
    
   

@@ -110,34 +110,59 @@ def dashboard():
     return render_template('dashboard.html', fullname=user.fullname)
 
 # ─── Leaderboard API ───────────────────────────────────────
-@app.route('/api/leaderboard', methods=['GET', 'POST'])
-def leaderboard():
-    if request.method == 'GET':
-        limit  = int(request.args.get('limit', 10))
-        offset = int(request.args.get('offset', 0))
-        entries = (LeaderboardEntry
-                   .query
-                   .order_by(LeaderboardEntry.score.desc(),
-                             LeaderboardEntry.timestamp.asc())
-                   .offset(offset)
-                   .limit(limit)
-                   .all())
-        return jsonify([{
-            'rank':   i + offset + 1,
-            'player': e.player_name,
-            'score':  e.score,
-            'level':  e.level
-        } for i, e in enumerate(entries)])
-    # POST
+@app.route('/api/leaderboard', methods=['POST'])
+def post_leaderboard():
     data = request.get_json()
-    entry = LeaderboardEntry(
-        player_name=data['player'],
-        score=data['score'],
-        level=data['level']
-    )
+    player = data.get('player')
+    score = data.get('score')
+    level = data.get('level')
+    if not player or not score or not level:
+        return jsonify({'error': 'Missing data'}), 400
+    entry = LeaderboardEntry(player_name=player, score=score, level=level)
     db.session.add(entry)
     db.session.commit()
-    return jsonify({'message': 'Score submitted successfully'}), 201
+    return jsonify({'success': True})
+
+@app.route('/api/leaderboard', methods=['GET'])
+def get_leaderboard():
+    mode = request.args.get('mode', 'normal')
+    if mode == 'aggregate':
+        # Aggregate: sum scores per player, rank by total score
+        results = (
+            db.session.query(
+                LeaderboardEntry.player_name,
+                db.func.sum(LeaderboardEntry.score).label('score')
+            )
+            .group_by(LeaderboardEntry.player_name)
+            .order_by(db.desc('score'))
+            .all()
+        )
+        return jsonify([
+            {
+                'rank': i + 1,
+                'player': row.player_name,
+                'score': int(row.score)
+            }
+            for i, row in enumerate(results)
+        ])
+    else:
+        # Normal: show each game entry
+        entries = (
+            LeaderboardEntry
+            .query
+            .order_by(LeaderboardEntry.score.desc(),
+                      LeaderboardEntry.timestamp.asc())
+            .all()
+        )
+        return jsonify([
+            {
+                'rank': i + 1,
+                'player': e.player_name,
+                'score': e.score,
+                'level': e.level
+            }
+            for i, e in enumerate(entries)
+        ])
 
 # ─── Words API ─────────────────────────────────────────────
 @app.route('/api/words')
@@ -185,6 +210,12 @@ def admin_delete_user(user_id):
     db.session.commit()
     flash(f'Removed user {u.fullname}', 'info')
     return redirect(url_for('admin_panel'))
+
+@app.route('/admin/clear_leaderboard')
+def clear_leaderboard():
+    LeaderboardEntry.query.delete()
+    db.session.commit()
+    return "Leaderboard cleared!"
 
 # ─── Vercel Serverless handler ───────────────────────────
 def handler(request, context):
