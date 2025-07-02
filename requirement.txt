@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-JWT-Extended
+Flask-CORS
+psycopg2-binary
+firebase-admin
+python-dotenv
+Flask-Migrate
+gunicorn
+
