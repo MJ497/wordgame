@@ -263,7 +263,5 @@ def reset_password(token):
     return render_template('reset_password.html')
 
 
-# ─── Vercel Serverless handler ───────────────────────────
-def handler(request, context):
-    return app(request.scope, request.receive, request.send)
+
 
