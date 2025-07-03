@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import secrets
 
 # ─── Init Flask ───────────────────────────────────────────────────────────────
 app = Flask(__name__)
@@ -98,7 +99,9 @@ def login():
 
 @app.route('/logout')
 def logout():
+    print("Logging out, session before:", dict(session))
     session.clear()
+    print("Session after:", dict(session))
     return redirect(url_for('home'))
 
 @app.route('/dashboard')
@@ -217,6 +220,53 @@ def get_word_bank():
     for w in all_words:
         result[w.level].append(w.text.upper())
     return jsonify(result)
+
+
+
+
+
+# ...existing code...
+
+reset_tokens = {}  # In-memory store for demo; use a DB or cache for production
+
+@app.route('/forgot-password', methods=['GET', 'POST'])
+def forgot_password():
+    show_link = False
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = secrets.token_urlsafe(32)
+            reset_tokens[token] = user.id
+            reset_link = url_for('reset_password', token=token, _external=True)
+            flash(reset_link, 'info')
+            show_link = True
+        else:
+            flash('If that email is registered, a reset link has been sent.', 'info')
+        return render_template('forgot_password.html', show_link=show_link)
+    return render_template('forgot_password.html', show_link=show_link)
+
+@app.route('/reset-password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    user_id = reset_tokens.get(token)
+    if not user_id:
+        flash('Invalid or expired reset link.', 'error')
+        return redirect(url_for('forgot_password'))
+    user = User.query.get(user_id)
+    if not user:
+        flash('User not found.', 'error')
+        return redirect(url_for('forgot_password'))
+    if request.method == 'POST':
+        password = request.form.get('password')
+        if not password:
+            flash('Password required.', 'error')
+            return render_template('reset_password.html')
+        user.set_password(password)
+        db.session.commit()
+        reset_tokens.pop(token, None)
+        flash('Password reset successful. You can now log in.', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_password.html')
 
 # ─── Run App ──────────────────────────────────────────────────────────────────
 if __name__ == "__main__":
