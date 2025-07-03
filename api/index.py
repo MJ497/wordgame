@@ -267,6 +267,3 @@ def reset_password(token):
 def handler(request, context):
     return app(request.scope, request.receive, request.send)
 
-# ─── Run (development only) ───────────────────────────────
-if __name__ == "__main__":
-    app.run(debug=True)
