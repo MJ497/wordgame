@@ -68,6 +68,14 @@
         .word-list-item:hover {
             background-color: #f1f5f9;
         }
+        .cell.selected {
+  background-color: #fde68a !important; /* yellow-200 */
+  color: #1e293b !important;           /* slate-800 */
+  font-weight: 700;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px #fbbf24;
+  transition: background 0.2s, color 0.2s;
+}
         /* prevent browser text‐selection on the grid */
 #wordGrid, 
 #wordGrid .cell {

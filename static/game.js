@@ -164,35 +164,44 @@ document.addEventListener('DOMContentLoaded', () => {
 // ...existing code...
 
   // ======= EVENTS =======
-  gridEl.onmousedown = e => {
-    if (e.target.classList.contains('cell')) {
-      selecting = true;
-      selStart = { row: +e.target.dataset.row, col: +e.target.dataset.col };
-      e.target.classList.add('selected');
-    }
-  };
-  gridEl.onmousemove = e => {
-    if (!selecting) return;
-    const el = document.elementFromPoint(e.clientX, e.clientY);
-    if (!el?.classList.contains('cell')) return;
+ // ...existing code...
 
-    selEnd = { row: +el.dataset.row, col: +el.dataset.col };
+gridEl.onmousedown = e => {
+  if (e.target.classList.contains('cell')) {
+    selecting = true;
+    selStart = { row: +e.target.dataset.row, col: +e.target.dataset.col };
+    selEnd = selStart; // Start selection at the first cell
     document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
-    between(selStart, selEnd).forEach(({ row, col }) => {
-      document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`)
-        .classList.add('selected');
-    });
-  };
+    e.target.classList.add('selected');
+  }
+};
 
-  document.onmouseup = () => {
-    if (!selecting) return;
-    const str = between(selStart, selEnd)
-      .map(({ row, col }) => grid[row][col])
-      .join('');
-    const match = checkMatch(str);
-    if (match && !foundWords.has(match)) markFound(match);
-    clearSel();
-  };
+gridEl.onmousemove = e => {
+  if (!selecting) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if (!el?.classList.contains('cell')) return;
+
+  selEnd = { row: +el.dataset.row, col: +el.dataset.col };
+  // Clear previous highlights
+  document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+  // Highlight all cells between selStart and selEnd
+  between(selStart, selEnd).forEach(({ row, col }) => {
+    const cell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
+    if (cell) cell.classList.add('selected');
+  });
+};
+
+document.onmouseup = () => {
+  if (!selecting) return;
+  const str = between(selStart, selEnd)
+    .map(({ row, col }) => grid[row][col])
+    .join('');
+  const match = checkMatch(str);
+  if (match && !foundWords.has(match)) markFound(match);
+  clearSel();
+};
+
+// ...existing code...
   // touch support
   gridEl.ontouchstart = e => { e.preventDefault(); gridEl.onmousedown(e.touches[0]); };
   gridEl.ontouchmove = e => { e.preventDefault(); gridEl.onmousemove(e.touches[0]); };
