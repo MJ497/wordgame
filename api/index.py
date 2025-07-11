@@ -7,7 +7,7 @@ from datetime import datetime
 import secrets
 
 # ─── Init Flask ────────────────────────────────────────────
-app = Flask(__name__, template_folder="../Templates", static_folder="../static")
+app = Flask(__name__, template_folder="Templates", static_folder="static")
 
 # ─── Environment & Config ─────────────────────────────────
 # Ensure DATABASE_URL is set
