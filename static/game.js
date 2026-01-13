@@ -330,7 +330,7 @@ document.onmouseup = () => {
     hintBtn.disabled = false;
     hintBtn.textContent = `Hint (${hintsLeft})`;
     score = 0; scoreEl.textContent = 0;
-    timeLeft = currentDifficulty === 'easy' ? 120 : currentDifficulty === 'medium' ? 180 : 240;
+    timeLeft = currentDifficulty === 'easy' ? 45 : currentDifficulty === 'medium' ? 60 : 120;
     timerEl.textContent = fmt(timeLeft);
     foundWords.clear();
     wordsToFind = [...wordBank[currentDifficulty]];
