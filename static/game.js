@@ -202,10 +202,21 @@ document.onmouseup = () => {
 };
 
 // ...existing code...
-  // touch support
-  gridEl.ontouchstart = e => { e.preventDefault(); gridEl.onmousedown(e.touches[0]); };
-  gridEl.ontouchmove = e => { e.preventDefault(); gridEl.onmousemove(e.touches[0]); };
-  document.ontouchend = e => { e.preventDefault(); document.onmouseup(); };
+  // touch support (limited to the grid so other UI buttons still work on mobile)
+  gridEl.ontouchstart = e => {
+    e.preventDefault();
+    gridEl.onmousedown(e.touches[0]);
+  };
+
+  gridEl.ontouchmove = e => {
+    e.preventDefault();
+    gridEl.onmousemove(e.touches[0]);
+  };
+
+  gridEl.ontouchend = e => {
+    e.preventDefault();
+    document.onmouseup();
+  };
 
   // ======= HINT =======
   hintBtn.onclick = () => {
